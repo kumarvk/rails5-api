@@ -1,0 +1,879 @@
+  [1m[35m (106.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (89.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePages (20160914120743)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (121.4ms)[0m  [1m[35mCREATE TABLE "pages" ("id" serial primary key, "page_url" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160914120743"]]
+  [1m[35m (21.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2016-09-14 12:13:28 UTC], ["updated_at", 2016-09-14 12:13:28 UTC]]
+  [1m[35m (11.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'pages'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started POST "/pages" for 127.0.0.1 at 2016-09-14 17:46:45 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#create as */*
+  Parameters: {"page_url"=>"https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application", "page"=>{"page_url"=>"https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application"}}
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "pages" ("page_url", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["page_url", "https://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application"], ["created_at", 2016-09-14 12:16:45 UTC], ["updated_at", 2016-09-14 12:16:45 UTC]]
+  [1m[35m (21.1ms)[0m  [1m[35mCOMMIT[0m
+[active_model_serializers] Rendered PageSerializer with ActiveModelSerializers::Adapter::Attributes (0.16ms)
+Completed 201 Created in 32ms (Views: 4.8ms | ActiveRecord: 23.8ms)
+
+
+Started GET "/pages" for 127.0.0.1 at 2016-09-14 17:47:15 +0530
+Processing by PagesController#index as */*
+  [1m[36mPage Load (0.6ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.57ms)
+Completed 200 OK in 4ms (Views: 2.8ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-09-14 17:47:36 +0530
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/rails/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/rails/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.1/lib/rails/templates/rails/welcome/index.html.erb (3.0ms)
+Completed 200 OK in 7ms (Views: 5.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2016-09-14 17:47:36 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+actionpack (5.0.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.1) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.1) lib/rails/engine.rb:522:in `call'
+puma (3.6.0) lib/puma/configuration.rb:225:in `call'
+puma (3.6.0) lib/puma/server.rb:578:in `handle_request'
+puma (3.6.0) lib/puma/server.rb:415:in `process_client'
+puma (3.6.0) lib/puma/server.rb:275:in `block in run'
+puma (3.6.0) lib/puma/thread_pool.rb:116:in `block in spawn_thread'
+Started GET "/pages" for 127.0.0.1 at 2016-09-14 17:47:42 +0530
+Processing by PagesController#index as HTML
+  [1m[36mPage Load (0.4ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.29ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/pages" for 127.0.0.1 at 2016-09-14 17:48:04 +0530
+Processing by PagesController#create as */*
+  Parameters: {"page_url"=>"http://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application", "page"=>{"page_url"=>"http://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "pages" ("page_url", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["page_url", "http://www.airpair.com/ruby-on-rails/posts/building-a-restful-api-in-a-rails-application"], ["created_at", 2016-09-14 12:18:04 UTC], ["updated_at", 2016-09-14 12:18:04 UTC]]
+  [1m[35m (21.5ms)[0m  [1m[35mCOMMIT[0m
+[active_model_serializers] Rendered PageSerializer with ActiveModelSerializers::Adapter::Attributes (0.2ms)
+Completed 201 Created in 27ms (Views: 1.1ms | ActiveRecord: 22.2ms)
+
+
+Started GET "/pages" for 127.0.0.1 at 2016-09-14 17:48:08 +0530
+Processing by PagesController#index as HTML
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.19ms)
+Completed 200 OK in 1ms (Views: 1.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/pages" for 127.0.0.1 at 2016-09-14 18:42:14 +0530
+Processing by PagesController#create as */*
+  Parameters: {"hetu"=>"1", "first_name"=>"vikash", "last_name"=>"singh", "email"=>"abc@gmail.com", "phone"=>"7894561232", "city"=>"Indore", "postcode"=>"452001", "address"=>"navlakha", "id"=>"50"}
+Completed 400 Bad Request in 0ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: page):
+  
+app/controllers/pages_controller.rb:49:in `page_params'
+app/controllers/pages_controller.rb:18:in `create'
+Started POST "/" for 127.0.0.1 at 2016-09-14 18:42:24 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/"):
+  
+actionpack (5.0.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.1) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.1) lib/rails/engine.rb:522:in `call'
+puma (3.6.0) lib/puma/configuration.rb:225:in `call'
+puma (3.6.0) lib/puma/server.rb:578:in `handle_request'
+puma (3.6.0) lib/puma/server.rb:415:in `process_client'
+puma (3.6.0) lib/puma/server.rb:275:in `block in run'
+puma (3.6.0) lib/puma/thread_pool.rb:116:in `block in spawn_thread'
+Started GET "/pages" for 127.0.0.1 at 2016-09-14 18:42:45 +0530
+Processing by PagesController#index as */*
+  [1m[36mPage Load (0.7ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.61ms)
+Completed 200 OK in 4ms (Views: 2.8ms | ActiveRecord: 0.7ms)
+
+
+Started POST "/clients" for 127.0.0.1 at 2016-09-14 18:45:55 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/clients"):
+  
+actionpack (5.0.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.1) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.1) lib/rails/engine.rb:522:in `call'
+puma (3.6.0) lib/puma/configuration.rb:225:in `call'
+puma (3.6.0) lib/puma/server.rb:578:in `handle_request'
+puma (3.6.0) lib/puma/server.rb:415:in `process_client'
+puma (3.6.0) lib/puma/server.rb:275:in `block in run'
+puma (3.6.0) lib/puma/thread_pool.rb:116:in `block in spawn_thread'
+Started POST "/pages" for 127.0.0.1 at 2016-09-14 19:47:59 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#create as */*
+  Parameters: {"page_url"=>"http://www.airpair.com/", "page"=>{"page_url"=>"http://www.airpair.com/"}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "pages" ("page_url", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["page_url", "http://www.airpair.com/"], ["created_at", 2016-09-14 14:18:35 UTC], ["updated_at", 2016-09-14 14:18:35 UTC]]
+  [1m[35m (18.2ms)[0m  [1m[35mCOMMIT[0m
+[active_model_serializers] Rendered PageSerializer with ActiveModelSerializers::Adapter::Attributes (0.21ms)
+Completed 201 Created in 36384ms (Views: 7.7ms | ActiveRecord: 22.7ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-09-15 11:59:38 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (26.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /home/rails/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/rails/.rvm/gems/ruby-2.3.0/gems/railties-5.0.0.1/lib/rails/templates/rails/welcome/index.html.erb (3.2ms)
+Completed 200 OK in 132ms (Views: 121.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2016-09-15 11:59:38 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+actionpack (5.0.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.1) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.1) lib/rails/engine.rb:522:in `call'
+puma (3.6.0) lib/puma/configuration.rb:225:in `call'
+puma (3.6.0) lib/puma/server.rb:578:in `handle_request'
+puma (3.6.0) lib/puma/server.rb:415:in `process_client'
+puma (3.6.0) lib/puma/server.rb:275:in `block in run'
+puma (3.6.0) lib/puma/thread_pool.rb:116:in `block in spawn_thread'
+Started GET "/pages" for 127.0.0.1 at 2016-09-15 11:59:45 +0530
+Processing by PagesController#index as HTML
+  [1m[36mPage Load (85.2ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.41ms)
+Completed 200 OK in 253ms (Views: 11.4ms | ActiveRecord: 240.3ms)
+
+
+Started GET "/pages" for 127.0.0.1 at 2016-09-15 12:31:12 +0530
+Processing by PagesController#index as HTML
+  [1m[36mPage Load (0.4ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.45ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.4ms)
+
+
+  [1m[35m (3.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePageContents (20160915114029)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (277.7ms)[0m  [1m[35mCREATE TABLE "page_contents" ("id" serial primary key, "tag" character varying, "content" character varying, "page_id_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_006f6ee2a8"
+FOREIGN KEY ("page_id_id")
+  REFERENCES "page_ids" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePageContents (20160915132450)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (69.1ms)[0m  [1m[35mCREATE TABLE "page_contents" ("id" serial primary key, "tag" character varying, "content" character varying, "page_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_446406fcd5"
+FOREIGN KEY ("page_id")
+  REFERENCES "pages" ("id")
+)[0m
+  [1m[35m (37.7ms)[0m  [1m[35mCREATE  INDEX  "index_page_contents_on_page_id" ON "page_contents"  ("page_id")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160915132450"]]
+  [1m[35m (15.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (31.5ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'page_contents'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'pages'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started GET "/pages" for 127.0.0.1 at 2016-09-15 19:08:42 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#index as */*
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+Completed 200 OK in 9ms (Views: 4.2ms | ActiveRecord: 3.0ms)
+
+
+Started POST "/page_contents" for 127.0.0.1 at 2016-09-15 19:11:04 +0530
+Processing by PageContentsController#create as */*
+  Parameters: {"tag"=>"page tag name", "content"=>"page content"}
+Completed 400 Bad Request in 84795ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: page_content):
+  
+app/controllers/page_contents_controller.rb:50:in `page_content_params'
+app/controllers/page_contents_controller.rb:18:in `create'
+Started POST "/page_contents" for 127.0.0.1 at 2016-09-15 19:12:41 +0530
+Processing by PageContentsController#create as */*
+  Parameters: {"tag"=>"page tag name", "content"=>"page content", "page_id"=>"1"}
+Completed 400 Bad Request in 77248ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: page_content):
+  
+app/controllers/page_contents_controller.rb:50:in `page_content_params'
+app/controllers/page_contents_controller.rb:18:in `create'
+Started POST "/page_contents" for 127.0.0.1 at 2016-09-15 19:14:02 +0530
+Processing by PageContentsController#create as */*
+  Parameters: {"tag"=>"page tag name", "content"=>"page content", "page_id"=>"1"}
+Completed 400 Bad Request in 293172ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: page_content):
+  
+app/controllers/page_contents_controller.rb:50:in `page_content_params'
+app/controllers/page_contents_controller.rb:18:in `create'
+Started POST "/pages" for 127.0.0.1 at 2016-09-15 19:20:08 +0530
+Processing by PagesController#create as */*
+  Parameters: {"page_url"=>" \"http://www.airpair.com/\""}
+Completed 400 Bad Request in 1ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: page):
+  
+app/controllers/pages_controller.rb:49:in `page_params'
+app/controllers/pages_controller.rb:18:in `create'
+Started POST "/page_contents" for 127.0.0.1 at 2016-09-15 19:23:52 +0530
+Processing by PageContentsController#create as */*
+  Parameters: {"page_content"=>{"tag"=>"page tag name", "content"=>"page content", "page_id"=>"1"}}
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "page tag name"], ["content", "page content"], ["page_id", 1], ["created_at", 2016-09-15 13:54:27 UTC], ["updated_at", 2016-09-15 13:54:27 UTC]]
+  [1m[35m (41.5ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 35047ms (Views: 0.8ms | ActiveRecord: 45.3ms)
+
+
+Started GET "/pages" for 127.0.0.1 at 2016-09-15 19:25:02 +0530
+Processing by PagesController#index as HTML
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT "pages".* FROM "pages"[0m
+Completed 200 OK in 8ms (Views: 3.7ms | ActiveRecord: 2.4ms)
+
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePageContents (20160915132450)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (36.0ms)[0m  [1m[35mDROP TABLE "page_contents"[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20160915132450"]]
+  [1m[35m (29.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (2.2ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'pages'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePages (20160914120743)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE "pages"[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20160914120743"]]
+  [1m[35m (22.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePages (20160914120743)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (91.6ms)[0m  [1m[35mCREATE TABLE "pages" ("id" serial primary key, "page_url" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160914120743"]]
+  [1m[35m (25.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePageContents (20160915132450)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (92.9ms)[0m  [1m[35mCREATE TABLE "page_contents" ("id" serial primary key, "tag" character varying, "content" character varying, "web_page_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160915132450"]]
+  [1m[35m (27.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'page_contents'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'pages'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePageContents (20160915132450)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE "page_contents"[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20160915132450"]]
+  [1m[35m (18.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'pages'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePages (20160914120743)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE "pages"[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20160914120743"]]
+  [1m[35m (27.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2010711508384758165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePages (20160914120743)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (101.1ms)[0m  [1m[35mCREATE TABLE "pages" ("id" serial primary key, "page_url" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160914120743"]]
+  [1m[35m (18.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePageContents (20160915132450)
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (149.6ms)[0m  [1m[35mCREATE TABLE "page_contents" ("id" serial primary key, "tag" character varying, "content" character varying, "page_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_446406fcd5"
+FOREIGN KEY ("page_id")
+  REFERENCES "pages" ("id")
+)[0m
+  [1m[35m (49.6ms)[0m  [1m[35mCREATE  INDEX  "index_page_contents_on_page_id" ON "page_contents"  ("page_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160915132450"]]
+  [1m[35m (20.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2010711508384758165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'page_contents'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'pages'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started POST "/pages" for 127.0.0.1 at 2016-09-16 15:31:36 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (25.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#create as */*
+  Parameters: {"page_url"=>"https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md"}
+Completed 400 Bad Request in 8ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: page):
+  
+app/controllers/pages_controller.rb:54:in `page_params'
+app/controllers/pages_controller.rb:18:in `create'
+Started POST "/pages" for 127.0.0.1 at 2016-09-16 15:32:09 +0530
+Processing by PagesController#create as */*
+  Parameters: {"page"=>{"page_url"=>"https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md"}}
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (12.9ms)[0m  [1m[32mINSERT INTO "pages" ("page_url", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["page_url", "https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md"], ["created_at", 2016-09-16 10:02:10 UTC], ["updated_at", 2016-09-16 10:02:10 UTC]]
+  [1m[35mSQL (13.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Skip to content"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      \n    "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n          Personal\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n          Open source\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n          Business\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n          Explore\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Sign up"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Sign in"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Pricing"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Blog"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Support"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Search GitHub"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n    \n    Watch\n  "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n    117\n  "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n    \n    Star\n  "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      4,962\n    "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n        \n        Fork\n      "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      1,081\n    "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "thoughtbot"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "factory_girl"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      \n      Code\n      \n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n        \n        Issues\n        17\n        \n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      \n      Pull requests\n      13\n      \n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      \n        \n      \n      Projects\n      0\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      \n      Wiki\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n    \n    Pulse\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n    \n    Graphs\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Permalink"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Branches"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Tags"], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                1.3.x\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                2.6.x\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                3.6.x\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                5-0-ruby-rails-support-drops\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                broken-appraisal\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                fix-getting-started-md\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                gh-pages-old\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                gh-pages\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jc-benchmarking\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jc-gbw-modules-round-three\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:11 UTC], ["updated_at", 2016-09-16 10:02:11 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jd-issue-triage\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jd-less-lint\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jf-coaching\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jf-fix-method-cache-busting\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                jf-name-history\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                master\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                meta-programming-namespaces\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                mj-explain-the-name\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                module-ideas-round-2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                module-ideas\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                produce-association\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.7.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.5.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.4.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.3.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.2.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.1.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.0.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v4.0.0.rc1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.6.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.6.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.6.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.5.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.4.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.4.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.4.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.3.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.2.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.1.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.1.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.0.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v3.0.0.rc1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.6.5\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.6.4\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.6.3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.6.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.6.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.6.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.5.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.5.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.5.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.4.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.4.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.4.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.3.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.3.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.3.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.2.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.1.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.1.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.1.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.5\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.4\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.rc4\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.rc3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.rc2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.rc1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.beta5\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.beta4\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v2.0.0.beta3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.3.3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.3.2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.3.1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.3.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.2.5\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.2.4\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.2.3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                v1.0.0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-2-2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-2-1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-2-0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-1-5\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-1-4\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-1-3\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-1-2\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-1-1\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n              \n              \n                rel_1-0\n              \n            "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      Find file\n    "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "factory_girl"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n          0cde4a7\n        "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "saadbinakhlaq"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Fix typo in GETTING_STARTED - Change `a author` to `an author`"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", " "], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "joshuaclayton"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "gabebw"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "jaredbeck"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "dpickett"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "jferris"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Jwan622"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "jeffcole"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "ovargas27"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "weppos"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "releu"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "pythonandchips"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "betelgeuse"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "pjg"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "saadbinakhlaq"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "olivierlacan"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "ifesdjeen"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "djbender"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "cibernox"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "mike-burns"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "mark-rushakoff"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "manuelmeurer"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "leriksen"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "kristianmandrup"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "kddeisz"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "tadp"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "justinko"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "sikachu"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "huerlisi"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "sinsoku"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "sivagollapalli"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "drapergeek"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "stve"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "iwz"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "evilguc"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "hosamaly"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "phlipper"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "subelsky"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "tobiasfeistmantl"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "eostrom"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "futureperfect"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "lime"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "eliotsykes"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "dasch"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "tomstuart"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "dgalarza"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "ckib16"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "cpytel"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "carlosantoniodasilva"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "r00k"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "mironov"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "andynu"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "ndp"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "agronemann"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "AdamZaczek"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Raw"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Blame"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "History"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", ""], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Contact GitHub"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "API"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Training"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Shop"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Blog"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "About"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "\n      \n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Terms"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Privacy"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Security"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Status"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Help"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Reload"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "a"], ["content", "Reload"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "\n  \n  thoughtbot/factory_girl\n\n"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "Getting Started"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "Test::Unit"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "Cucumber"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "Spinach"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "Minitest"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "Minitest::Spec"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h1"], ["content", "minitest-rails"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Users who have contributed to this file"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Update Your Gemfile"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Configure your test suite"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Defining factories"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Using factories"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Dynamic Attributes"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Aliases"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Dependent Attributes"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Transient Attributes"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Method Name / Reserved Word Attributes"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Associations"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Inheritance"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Sequences"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Traits"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Callbacks"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Modifying factories"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Building or Creating Multiple Records"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Linting Factories"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Custom Construction"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Custom Strategies"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Custom Callbacks"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Custom Methods to Persist Objects"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "ActiveSupport Instrumentation"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Rails Preloaders and RSpec"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("tag", "content", "page_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["tag", "h2"], ["content", "Using Without Bundler"], ["page_id", 1], ["created_at", 2016-09-16 10:02:12 UTC], ["updated_at", 2016-09-16 10:02:12 UTC]]
+  [1m[35m (3.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 2542ms (Views: 0.8ms | ActiveRecord: 315.2ms)
+
+
+Started GET "/pages/1/page_contents" for 127.0.0.1 at 2016-09-16 15:36:08 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#page_contents as */*
+  Parameters: {"page_id"=>"1"}
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+Completed 404 Not Found in 16ms (ActiveRecord: 2.4ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Page with 'id'=):
+  
+app/controllers/pages_controller.rb:49:in `set_page'
+Started GET "/page/1/page_contents" for 127.0.0.1 at 2016-09-16 15:37:03 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/page/1/page_contents"):
+  
+actionpack (5.0.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0.1) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0.1) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0.1) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0.1) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0.1) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0.1) lib/rails/engine.rb:522:in `call'
+puma (3.6.0) lib/puma/configuration.rb:225:in `call'
+puma (3.6.0) lib/puma/server.rb:578:in `handle_request'
+puma (3.6.0) lib/puma/server.rb:415:in `process_client'
+puma (3.6.0) lib/puma/server.rb:275:in `block in run'
+puma (3.6.0) lib/puma/thread_pool.rb:116:in `block in spawn_thread'
+Started GET "/pages/1/page_contents" for 127.0.0.1 at 2016-09-16 15:37:13 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#page_contents as */*
+  Parameters: {"page_id"=>"1"}
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+Completed 404 Not Found in 16ms (ActiveRecord: 2.2ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Page with 'id'=):
+  
+app/controllers/pages_controller.rb:50:in `set_page'
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" ORDER BY "pages"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Started GET "/pages/1/page_contents" for 127.0.0.1 at 2016-09-16 15:38:57 +0530
+Processing by PagesController#page_contents as */*
+  Parameters: {"page_id"=>"1"}
+  [1m[36mPage Load (0.3ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+Completed 404 Not Found in 70435ms (ActiveRecord: 5.4ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Page with 'id'=):
+  
+app/controllers/pages_controller.rb:51:in `set_page'
+Started GET "/pages/1/page_contents" for 127.0.0.1 at 2016-09-16 15:40:17 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#page_contents as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mPage Load (0.5ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPageContent Load (1.9ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."page_id" = $1[0m  [["page_id", 1]]
+Completed 200 OK in 13438ms (Views: 104.3ms | ActiveRecord: 12.4ms)
+
+
+Started GET "/pages/1/page_contents" for 127.0.0.1 at 2016-09-16 15:46:35 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by PagesController#page_contents as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mPage Load (0.2ms)[0m  [1m[34mSELECT  "pages".* FROM "pages" WHERE "pages"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.7ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."page_id" = $1[0m  [["page_id", 1]]
+Completed 200 OK in 97ms (Views: 64.3ms | ActiveRecord: 4.7ms)
+
+
